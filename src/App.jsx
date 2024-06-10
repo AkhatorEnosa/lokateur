@@ -14,6 +14,7 @@ function App() {
   const [detailsIP, setDetailsIP] = useState("101.33.11.255");
   const [locationDetails, setLocation] = useState("Munich, Bayern")
   const [timezone, setTimezone] = useState('UTC +02:00')
+  const [currency, setCurrency] = useState('Euro')
 
   // run api call
   const callApi = (ip) => {
@@ -30,6 +31,7 @@ function App() {
             setTooltip(`${data.cityName}, ${data.countryName}`)
             setLocation(`${data.cityName}, ${data.regionName}`)
             setTimezone(`UTC ${data.timeZone}`)
+            setCurrency(data.currency.name)
             if(coords[0] !== "") {
               console.log(data)
               return data;
@@ -61,7 +63,7 @@ function App() {
     <div className='w-full h-full overflow-scroll'>
        <div className='flex flex-col'>
         <Input getIp={getIp} handleLocation={handleLocation} location={coords}/>
-        <LocationDetails ipAddress={detailsIP} locationDetails={locationDetails} timezone={timezone}/>
+        <LocationDetails ipAddress={detailsIP} locationDetails={locationDetails} timezone={timezone} currency={currency}/>
         <Map position={coords.length > 1 ? coords : [
 48.137428,11.57549]} details={tooltip} coords={coords.length > 1 ? coords : [
 48.137428,11.57549]}/>
