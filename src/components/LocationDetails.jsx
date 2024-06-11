@@ -2,7 +2,7 @@
 const LocationDetails = (props) => {
   return (
     <div className="w-full flex flex-col justify-center items-center">
-        <div className="absolute w-[64vw] md:w-[70vw] grid grid-rows gap-6 md:gap-0 md:grid-cols-4 lg:grid-cols-4 justify-center items-center bg-white top-52 py-6 md:py-8 rounded-xl shadow-lg z-30">
+        <div className={(props.ipAddress !== '' && props.err !== true) ? "absolute w-[64vw] md:w-[70vw] grid grid-rows gap-6 md:gap-0 md:grid-cols-4 lg:grid-cols-4 justify-center items-center bg-white top-48 md:top-52 py-6 md:py-8 rounded-xl shadow-lg z-30" : "hidden"}>
             <div className="flex flex-col gap-2 text-center px-5 bg-red">
                 <p className="font-bold text-[10px] text-gray-500">IP ADDRESS</p>
                 <h2 className="font-bold text-sm md:text-lg text-purple-800">{props.ipAddress}</h2>
