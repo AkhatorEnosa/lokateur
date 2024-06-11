@@ -21,7 +21,7 @@ const Map = (props) => {
   return (
       <MapContainer
         center={props.position}
-        zoom={10}
+        zoom={13}
         scrollWheelZoom={false}
         style={{ minHeight: "70vh", minWidth: "100vw" }}
         className="z-10"
