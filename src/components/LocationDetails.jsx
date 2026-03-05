@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 const LocationDetails = (props) => {
   return (
-    <div className="w-full flex flex-col justify-center items-center">
-        <div className={(props.ipAddress !== '' && props.err !== true) ? "absolute w-[64vw] md:w-[70vw] grid grid-rows gap-6 md:gap-0 md:grid-cols-4 lg:grid-cols-4 justify-center items-center bg-white top-48 md:top-52 py-6 md:py-8 rounded-xl shadow-lg z-30" : "hidden"}>
+    <div className="relative w-full flex flex-col justify-center items-center  z-[70]">
+        <div className={`${props.ipAddress !== '' && props.err !== true ? "grid" : "scale-0"} absolute w-[64vw] md:w-[70vw] grid-rows gap-6 md:gap-0 md:grid-cols-4 lg:grid-cols-4 justify-center items-center bg-white py-6 md:py-8 rounded-xl shadow-lg transition-all duration-150]"`}>
             <div className="flex flex-col gap-2 justify-start h-full text-center px-5">
                 <p className="font-bold text-[10px] text-gray-500">IP ADDRESS</p>
                 <h2 className="font-bold text-sm md:text-lg text-purple-800">{props.ipAddress}</h2>

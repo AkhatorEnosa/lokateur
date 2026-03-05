@@ -16,7 +16,7 @@ const Map = (props) => {
         center={props.position}
         zoom={13}
         scrollWheelZoom={false}
-        style={{ minHeight: "70vh", minWidth: "100vw" }}
+        style={{ minHeight: "100vh", minWidth: "100vw" }}
         className="z-10"
       >
         <TileLayer
