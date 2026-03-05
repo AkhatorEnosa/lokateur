@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api-ip/*"
+  to = "https://freeipapi.com/api/json/:splat"
+  status = 200
+  force = true
