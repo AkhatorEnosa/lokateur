@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import Map from './components/Map'
 import LocationDetails from './components/LocationDetails';
-import { FaAngleRight } from 'react-icons/fa';
 import Navbar from './components/Navbar';
 import { BsArrowsAngleContract, BsArrowsAngleExpand } from 'react-icons/bs';
+import { FaAngleRight } from 'react-icons/fa6';
 
 function App() {
 
@@ -88,11 +88,11 @@ function App() {
           {!expandMap &&<div className="flex flex-col justify-center items-center w-full h-fit p-10 pb-24 md:pb-10 text-sm bg-fixed bg-origin-border bg-left-top bg-no-repeat bg-cover bg-[url('../../bg_image.avif')]">
             <Navbar myLocation={getMyLocation} />
             <div className={`relative w-full flex flex-col justify-center items-center z-[70]`}>
-                <div className="grid grid-cols-8 p-5 items-center w-[70vw] md:w-[50%]">
+                <div className="grid grid-cols-8 p-5 items-center w-[75vw] md:w-[90vw] lg:w-[50%]">
                     <div className="col-span-6 shadow-md">
-                        <input type="text" className="input w-full border-4 border-white outline-none p-4 rounded-l-2xl" placeholder="Search for any IP address or domain" onChange={handleIpChange}/>
-                      </div>
-                    <button className="button flex justify-center items-center font-bold gap-2 md:gap-2 bg-black rounded-r-2xl text-white p-5 col-span-2 hover:font-bold shadow-md transition-all duration-200" onClick={handleLocation}><span className="hidden md:flex">Search</span><FaAngleRight className="arrow text-3xl md:text-md"/></button>
+                      <input type="text" className="input w-full border-4 border-white text-purple-800 outline-none focus:bg-purple-100 focus:border-transparent font-bold p-4 rounded-l-2xl" placeholder="Search for any IP address or domain" onChange={handleIpChange}/>
+                    </div>
+                    <button className="button flex justify-center items-center font-bold gap-2 md:gap-2 bg-black rounded-r-2xl text-white p-5 col-span-2 hover:font-bold shadow-md transition-all duration-200" onClick={handleLocation}><span className="hidden md:flex">Search</span><FaAngleRight className="font-bold text-xl"/></button>
                 </div>
         
                 <p className={`${inputErr ? "scale-100" : "scale-0"} text-[10px] w-[62vw] md:[w-40vw] text-center py-3 bg-red-100 text-red-600 font-bold rounded-2xl transition-all duration-150 z-50`} >Please input a correct IP</p>
@@ -103,7 +103,7 @@ function App() {
 
           <div className={`relative w-full ${expandMap ? "h-[100vh]" : "h-[50vh] md:h-[70vh]"} overflow-clip transition-all duration-300 z-20`}>
           <span
-            className={`absolute left-10 bottom-10 p-5 rounded-full bg-purple-800 text-white cursor pointer z-40`}
+            className={`absolute left-10 bottom-10 p-5 hover:scale-105 hover:rotate-[360deg] rounded-full bg-purple-800 text-white duration-150 transition-all cursor-pointer z-40`}
             onClick={() => setExpandMap(!expandMap)}>{expandMap ? <BsArrowsAngleContract /> : <BsArrowsAngleExpand />}</span>
             <Map
               position={coords.length === 0 || err ? [48.137428, 11.57549] : coords}
