@@ -1,12 +1,14 @@
-import { useState } from 'react';
-import Input from './components/Input'
+import { useEffect, useState } from 'react';
 import Map from './components/Map'
 import LocationDetails from './components/LocationDetails';
+import { FaAngleRight } from 'react-icons/fa';
+import Navbar from './components/Navbar';
 
 function App() {
 
   const [ipAddress, setIpAddress] = useState("");
   const [coords, setCoords] = useState([]);
+  const [inputErr, setInputErr] = useState(false);
   const [err, setErr] = useState(false);
 
   const [tooltip, setTooltip] = useState("");
@@ -17,73 +19,88 @@ function App() {
   const [currency, setCurrency] = useState('')
 
   // run api call
-  const callApi = (ip) => {
-    const url = `https://freeipapi.com/api/json/${ip}`; // to get specific ip's info
-    fetch(url).then(response => {
-        if (response.ok) {
-            return response.json();
-        }
-            throw response;
-        })
-        .then(data => {
-            setCoords([data.latitude, data.longitude]);
-            setDetailsIP(data.ipAddress)
-            setTooltip(`${data.cityName}, ${data.countryName}`)
-            setLocation(`${data.cityName}, ${data.regionName}`)
-            setTimezone(`UTC ${data.timeZone}`)
-            setCurrency(`${data.currency.name} (${data.currency.code})`)
-            // console.log(data);
-              return data;
-        })
-        .catch(error => {
-          setErr(!err)
-            console.error(error);
-    });
-    return true;
+  const callApi = async (ip) => {
+    const url = `/api-ip/${ip}`; // to get specific ip's info
+    setErr(false)
 
-  }
+    try {
+      const response = await fetch(url);
 
-
-  const getIp = (e) => {
-    setIpAddress(e.target.value);
-  }
-
-
-  const handleLocation = (ip) => {
-    ip = ipAddress;
-    const sanitizedInput = ip.replace(/\s/g, "");
-    // callApi(ip)
-    const regExp = /^[0-9.]*$/;
-
-  // console.log(regExp.test(sanitizedInput));
-
-      if(regExp.test(sanitizedInput) && sanitizedInput !== ""){
-          callApi(sanitizedInput);
-          setErr(false)
-          err;
-      } else {
-        setErr(true);
-        err;
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status}`)
       }
+
+      const data = await response.json();
+
+      // destructure data so that instead of data.latitude we can just use latitude
+      const { latitude, longitude, ipAddress, cityName, countryName, regionName, timeZones, currencies } = data;
+
+      setCoords([latitude, longitude]);
+      setDetailsIP(ipAddress);
+      setTooltip(`${cityName}, ${countryName}`);
+      setLocation(`${cityName}, ${regionName}`);
+      setTimezone(`UTC ${timeZones[0]}`);
+      setCurrency(`${currencies[0]}`);
+      return data;
+
+    } catch (error) {
+      setErr(true);
+    }
   }
+
+  const handleIpChange = (e) => {
+    setIpAddress(e.target.value);
+
+    setInputErr(false);
+  }
+
+ const handleLocation = () => {
+  // Clean the input (remove spaces)
+  const sanitizedInput = ipAddress.trim().replace(/\s/g, "");
+
+  // Checks for 4 groups of digits separated by dots, where each group is between 0 and 255
+  const ipv4RegExp = /^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}$/;
+
+  if (sanitizedInput && ipv4RegExp.test(sanitizedInput)) {
+    setInputErr(false);
+    callApi(sanitizedInput);
+  } else {
+    setInputErr(true);
+    setDetailsIP("");
+    console.error("Invalid IP Address format entered.");
+  }
+};
 
   const getMyLocation = () => {
     callApi('');
-    coords;
-    tooltip;
-    locationDetails;
-    timezone;
-    currency;
   }
+
+  useEffect(() => {
+    callApi(ipAddress)
+  }, [])
 
   return (
     <div className='w-full h-full overflow-scroll'>
        <div className='flex flex-col'>
-        <Input myLocation={getMyLocation} getIp={getIp} handleLocation={handleLocation} location={coords} checkErr={err}/>
+          <div className="flex flex-col justify-center items-center w-full h-fit p-10 pb-24 md:pb-10 text-sm bg-fixed bg-origin-border bg-left-top bg-no-repeat bg-cover bg-[url('../../bg_image.avif')]">
+            <Navbar myLocation={getMyLocation} />
+            <>
+                <div className="grid grid-cols-8 p-5 items-center w-[70vw] md:w-[50%]">
+                    <div className="col-span-6 shadow-md">
+                        <input type="text" className="input w-full border-4 border-white outline-none p-4 rounded-l-2xl" placeholder="Search for any IP address or domain" onChange={handleIpChange}/>
+                      </div>
+                    <button className="button flex justify-center items-center font-bold gap-2 md:gap-2 bg-black rounded-r-2xl text-white p-5 col-span-2 hover:font-bold shadow-md transition-all duration-200" onClick={handleLocation}><span className="hidden md:flex">Search</span><FaAngleRight className="arrow text-3xl md:text-md"/></button>
+                </div>
+        
+                <p className={`${inputErr ? "scale-100" : "scale-0"} text-[10px] w-[62vw] md:[w-40vw] text-center py-3 bg-red-100 text-red-600 font-bold rounded-2xl transition-all duration-150 z-50`} >Please input a correct IP</p>
+            </>
+          </div>
+
         <LocationDetails ipAddress={detailsIP} err={err} locationDetails={locationDetails} timezone={timezone} currency={currency}/>
-        <Map position={coords.length > 1 ? coords : [
-48.137428,11.57549]} details={tooltip} coords={coords.length > 1 ? coords : [
-48.137428,11.57549]}/>
+        <Map
+          position={coords.length === 0 || err ? [48.137428, 11.57549] : coords}
+          details={tooltip}
+        />
       </div>
     </div>
   )

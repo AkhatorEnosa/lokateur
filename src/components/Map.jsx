@@ -2,19 +2,12 @@
 import { MapContainer, TileLayer, Marker, Popup} from "react-leaflet";
 import { useMap } from "react-leaflet/hooks";
 import "leaflet/dist/leaflet.css";
+import { createIcon } from "../helpers/createIcon";
 
 export const ChangeView = (props) => {
   const map = useMap();
   map.flyTo(props.position, map.getZoom());
   return null;
-};
-
-export const createIcon = (url) => {
-  // eslint-disable-next-line no-undef
-  return new L.Icon({
-    iconUrl: url,
-    iconAnchor: [0, 30],
-  });
 };
 
 const Map = (props) => {
@@ -35,7 +28,7 @@ const Map = (props) => {
             {props.details}
           </Popup>
         </Marker>
-        <ChangeView position={props.coords}/>
+        <ChangeView position={props.position}/>
       </MapContainer>
   );
 }
