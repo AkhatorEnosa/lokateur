@@ -20,7 +20,7 @@ function App() {
 
   // run api call
   const callApi = async (ip) => {
-    const url = `/api-ip/${ip}`; // to get specific ip's info
+    const url = `https://freeipapi.com/${ip}`; // to get specific ip's info
     setErr(false)
 
     try {
