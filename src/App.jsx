@@ -112,7 +112,7 @@ function App() {
           <div className={`relative w-full ${expandMap ? "h-[100vh]" : "h-[70vh]"} overflow-clip transition-all duration-300 z-20`}>
             {/* expand map button  */}
             <span
-              className={`absolute left-5 bottom-20 md:left-10 md:bottom-10 p-2 md:p-5 hover:scale-105 hover:rotate-[360deg] rounded-full bg-purple-800 text-white duration-150 transition-all cursor-pointer z-40`}
+              className={`absolute ${expandMap ? "right-2 md:right-10 bottom-10" : "right-2 top-5 md:right-10 md:bottom-10"} p-3 md:p-5 hover:scale-105 rounded-full bg-purple-800 text-white shadow duration-150 transition-all cursor-pointer z-40`}
               onClick={() => setExpandMap(!expandMap)}>
                 {expandMap ? <BsArrowsAngleContract /> : <BsArrowsAngleExpand />}
             </span>
