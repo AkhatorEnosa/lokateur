@@ -83,7 +83,7 @@ function App() {
   }, [])
 
   return (
-    <div className='w-full h-full overflow-scroll'>
+    <div className='w-full h-screen overflow-scroll'>
        <div className='relative flex flex-col'>
           {
             !expandMap &&
@@ -109,12 +109,15 @@ function App() {
           {/* location details  */}
           {!expandMap && <LocationDetails ipAddress={detailsIP} err={err} locationDetails={locationDetails} timezone={timezone} currency={currency} />}
 
-          <div className={`relative w-full ${expandMap ? "h-[100vh]" : "h-[50vh] md:h-[70vh]"} overflow-clip transition-all duration-300 z-20`}>
+          <div className={`relative w-full ${expandMap ? "h-[100vh]" : "h-[70vh]"} overflow-clip transition-all duration-300 z-20`}>
+            {/* expand map button  */}
             <span
               className={`absolute left-5 bottom-20 md:left-10 md:bottom-10 p-2 md:p-5 hover:scale-105 hover:rotate-[360deg] rounded-full bg-purple-800 text-white duration-150 transition-all cursor-pointer z-40`}
               onClick={() => setExpandMap(!expandMap)}>
                 {expandMap ? <BsArrowsAngleContract /> : <BsArrowsAngleExpand />}
             </span>
+            
+            {/* map component  */}
             <Map
               position={coords.length === 0 || err ? [48.137428, 11.57549] : coords}
               details={tooltip}
